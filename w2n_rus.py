@@ -109,12 +109,10 @@ decimal_words = ['ноль', 'один', 'два', 'три', 'четыре', 'п
 
 def number_formation(number_words):
     numbers = []
-    #print(number_words)
     for number_word in number_words:
         numbers.append(russian_number_system[number_word])
 
     if len(numbers) == 7:
-        #print('len number_words ==>> ', len(numbers))
         if numbers[3] == 1000:
               #print('четвертое слово ==>> 1000')
               sum_thousand = numbers[0] + numbers[1] + numbers[2]
@@ -123,93 +121,65 @@ def number_formation(number_words):
 
 
     if len(numbers) == 6:
-        #print('len number_words ==>> ', len(numbers))
         if numbers[2] == 1000:
-              #print('третье слово ==>> 1000')
               sum_thousand = numbers[0] + numbers[1]
               return sum_thousand * numbers[2] + numbers[3] + numbers[4] + numbers[5]
         if numbers[3] == 1000:
-              #print('четвертое слово ==>> 1000')
               sum_thousand = numbers[0] + numbers[1] + numbers[2]
               return sum_thousand * numbers[3] + numbers[4] + numbers[5]    
 
 
     if len(numbers) == 5:
-        #print('len number_words ==>> ', len(numbers))
         if numbers[0] == 1000:
-              #print('первое слово ==>> 1000')
               return numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4]
         if numbers[2] == 1000:
-              #print('третье слово ==>> 1000')
               sum_thousand = numbers[0] + numbers[1]
               return sum_thousand * numbers[2] + numbers[3] + numbers[4]
         if numbers[3] == 1000:
-              #print('четвертое слово ==>> 1000')
               sum_thousand = numbers[0] + numbers[1] + numbers[2]
               return sum_thousand * numbers[3] + numbers[4]    
         return (numbers[0] * numbers[1]) + numbers[2] + numbers[3] + numbers[4]
 
     if len(numbers) == 4:
-        #print('len number_words ==>> ', len(numbers))
         if numbers[0] == 1000:
-              #print('первое слово ==>> 1000')
               return numbers[0] + numbers[1] + numbers[2] + numbers[3]
         if numbers[2] == 1000:
-              #print('третье слово ==>> 1000')
               sum_thousand = numbers[0] + numbers[1]
               return sum_thousand * numbers[2] + numbers[3]
         if numbers[3] == 1000:
-              #print('четвертое слово ==>> 1000')
               sum_thousand = numbers[0] + numbers[1] + numbers[2]
               return sum_thousand * numbers[3]      
         return (numbers[0] * numbers[1]) + numbers[2] + numbers[3]
 
     elif len(numbers) == 3:
-        #print('len number_words ==>> ', len(numbers))
         #Если первое число X00
         if numbers[0] in [100,200,300,400,500,600,700,800,900]:
-            #print(' X00 есть')
             if numbers[1] == 1000:
-                #print('второе слово ==>> 1000')
                 return numbers[0] * numbers[1] + numbers[2] 
             if numbers[2] == 1000:
-                #print('третье слово ==>> 1000')
                 sum_thousand = numbers[0] + numbers[1]
                 return sum_thousand * numbers[2] 
             return numbers[0] + numbers[1] + numbers[2]
         #если первое число тысяча
         if numbers[0] == 1000:
-              #print('первое слово ==>> 1000')
               return numbers[0] + numbers[1] + numbers[2]  
         return numbers[0] * numbers[1] + numbers[2]
     
     elif len(numbers) == 2:
-        #print('len number_words ==>> ', len(numbers))
         
         if 1000 in numbers:
-            #print(' 1000 есть')
-            #print(numbers)
             if numbers[0] == 1000:
-              #print('первое слово ==>> 1000')
               return numbers[0] + numbers[1]
-            #print('умножаем ')
             res=numbers[0] * numbers[1]
-            #print('res == ', res)
             return numbers[0] * numbers[1]
 
         if 100 in numbers:
-            #print(' 1000 есть')
-            #print(numbers)
             if numbers[0] == 100:
-              #print('первое слово ==>> 1000')
               return numbers[0] + numbers[1]
-            #print('умножаем ')
             res=numbers[0] * numbers[1]
-            #print('res == ', res)
             return numbers[0] * numbers[1]
 
         elif 1000000 in numbers:
-            #print(' 1000000 есть')
             return numbers[0] * numbers[1]
             
         else:
@@ -248,24 +218,20 @@ def word_to_num(number_sentence):
     clean_numbers = []
     clean_decimal_numbers = []
 
-    # removing and, & etc.
     for word in split_words:
         if word in russian_number_system:
             clean_numbers.append(word)
-
-    #print(clean_numbers)
-    
+ 
 
     if len(clean_numbers) == 0:
         print("не корректное число! Введите правильно челое число")
         return
 
-    # Error if user enters million,billion, thousand or decimal point twice
     if clean_numbers.count('тысяча') > 1 or clean_numbers.count('миллион') > 1 or clean_numbers.count('миллиард') > 1 or clean_numbers.count('точка')> 1:
         print("не корректное число! Введите правильно челое число")
         return
 
-    # separate decimal part of number (if exists)
+    # тут в будущем будем обрабатывать не целые чилса пока херова работает
     if clean_numbers.count('точка') == 1:
         clean_decimal_numbers = clean_numbers[clean_numbers.index('point')+1:]
         clean_numbers = clean_numbers[:clean_numbers.index('point')]
@@ -285,20 +251,13 @@ def word_to_num(number_sentence):
         thousand_ind=thousand_ind+1
 
 
-    
-    #print('thousand_index == >> ', thousand_index)
-    #print('million_index == >> ', million_index)
-    #print('billion_index == >> ', billion_index)
-
-
     if (thousand_index > -1 and (thousand_index < million_index or thousand_index < billion_index)) or (million_index>-1 and million_index < billion_index):
         print("не корректное число! Введите правильно челое число")
         return
 
-    total_sum = 0  # storing the number to be returned
+    total_sum = 0
 
     if len(clean_numbers) > 0:
-        # hack for now, better way TODO
         if len(clean_numbers) == 1:
                 total_sum += russian_number_system[clean_numbers[0]]
 
@@ -320,18 +279,13 @@ def word_to_num(number_sentence):
                 elif billion_index > -1 and million_index == -1:
                     thousand_multiplier = number_formation(clean_numbers[billion_index+1:thousand_index])
                 else:
-                    #print(' 123123 === ', clean_numbers)
-                    #thousand_multiplier = number_formation(clean_numbers[0:thousand_index])
                     thousand_multiplier = number_formation(clean_numbers)
-                #total_sum += thousand_multiplier * 1000
                 total_sum += thousand_multiplier
 
             if thousand_index == -1 and million_index == -1 and billion_index == -1:
-                #print('9999999')
                 hundreds = number_formation(clean_numbers)
                 total_sum += hundreds
 
-     # adding decimal part to total_sum (if exists)
     if len(clean_decimal_numbers) > 0:
         decimal_sum = get_decimal_sum(clean_decimal_numbers)
         total_sum += decimal_sum
